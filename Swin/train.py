@@ -15,10 +15,12 @@ def train_epoch(model, criterion, optimizer, dataloader, device, epoch, logger, 
         outputs = model(inputs)
         if isinstance(outputs, list):
             outputs = outputs[0]
+        print(outputs)
+        print(outputs.shape)
+        break
         # compute the loss
         loss = criterion(outputs, labels.squeeze())
         losses.append(loss.item())
-
         # compute the accuracy
         prediction = torch.max(outputs, 1)[1]
         all_label.extend(labels.squeeze())
@@ -27,10 +29,11 @@ def train_epoch(model, criterion, optimizer, dataloader, device, epoch, logger, 
         # backward & optimize
         loss.backward()
         optimizer.step()
-        # break
+
 
         if (batch_idx + 1) % log_interval == 0:
             logger.info("train_epoch {:3d} | iteration {:5d} | Loss {:.6f} | Acc {:.2f}%".format(epoch+1, batch_idx+1, loss.item(), score*100))
+
 
     # Compute the average loss & accuracy
     training_loss = sum(losses)/len(losses)

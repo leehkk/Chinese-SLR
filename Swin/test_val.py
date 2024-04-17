@@ -18,11 +18,16 @@ def val_epoch(model, criterion, dataloader, device, epoch, logger, writer, weigh
             # get the inputs and labels
             inputs, labels = data['data'].to(device), data['label'].to(device)
             # forward
-            outputs = model(inputs)
+            outputs = model(inputs.float())
             if isinstance(outputs, list):
                 outputs = outputs[0]
             # compute the loss
-            loss = criterion(outputs, labels.squeeze())
+            if labels.size(0) > 1:
+                labels = labels.squeeze()
+            else:
+                labels = labels.squeeze()
+                labels = labels.unsqueeze(0)
+            loss = criterion(outputs, labels)
             losses.append(loss.item())
             # collect labels & prediction
             prediction = torch.max(outputs, 1)[1]
@@ -33,10 +38,19 @@ def val_epoch(model, criterion, dataloader, device, epoch, logger, writer, weigh
                     top_5.append(int(top_k_indices[j]))
                 if int(labels[i].item()) in top_5:
                     val_5 += 1
-            all_label.extend(labels.squeeze())
+            all_label.extend(labels)
             all_pred.extend(prediction)
-            score = accuracy_score(labels.squeeze().cpu().data.squeeze().numpy(),
-                                   prediction.cpu().data.squeeze().numpy())
+            if labels.size(0) > 1:
+                score = accuracy_score(labels.cpu().data.squeeze().numpy(),
+                                       prediction.cpu().data.squeeze().numpy())
+            else:
+                print(labels.item(), prediction.item())
+                if labels.item() == prediction.item():
+                    score = 100.0
+                else:
+                    score = 0.0
+
+
             if phase == "Test":
                 logger.info(
                     "Test iteration {} Loss of Epoch {}: {:.6f} | Acc: {:.2f}%".format(batch_idx, epoch + 1, loss,
