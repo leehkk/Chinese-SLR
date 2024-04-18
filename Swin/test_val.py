@@ -1,5 +1,6 @@
 import torch
 from sklearn.metrics import accuracy_score
+from torch import nn
 import pickle
 import numpy as np
 
@@ -18,16 +19,20 @@ def val_epoch(model, criterion, dataloader, device, epoch, logger, writer, weigh
             # get the inputs and labels
             inputs, labels = data['data'].to(device), data['label'].to(device)
             # forward
-            outputs = model(inputs.float())
+            outputs = model(inputs)
             if isinstance(outputs, list):
                 outputs = outputs[0]
             # compute the loss
+            # print(labels)
+            # print(labels.shape)
             if labels.size(0) > 1:
                 labels = labels.squeeze()
             else:
                 labels = labels.squeeze()
                 labels = labels.unsqueeze(0)
-            loss = criterion(outputs, labels)
+            # print(labels)
+            # print(labels.shape)
+            loss = nn.functional.cross_entropy(outputs, labels)
             losses.append(loss.item())
             # collect labels & prediction
             prediction = torch.max(outputs, 1)[1]
@@ -40,17 +45,16 @@ def val_epoch(model, criterion, dataloader, device, epoch, logger, writer, weigh
                     val_5 += 1
             all_label.extend(labels)
             all_pred.extend(prediction)
-            if labels.size(0) > 1:
-                score = accuracy_score(labels.cpu().data.squeeze().numpy(),
-                                       prediction.cpu().data.squeeze().numpy())
-            else:
-                print(labels.item(), prediction.item())
-                if labels.item() == prediction.item():
-                    score = 100.0
+            if labels.size(0) == 1:
+                print(prediction.cpu().data.squeeze().numpy())
+                print(labels.cpu().data.squeeze().numpy())
+                if labels.cpu().data.squeeze().numpy() == prediction.cpu().data.squeeze().numpy():
+                    score = 1.0
                 else:
                     score = 0.0
-
-
+            else:
+                score = accuracy_score(labels.cpu().data.numpy(),
+                                       prediction.cpu().data.squeeze().numpy())
             if phase == "Test":
                 logger.info(
                     "Test iteration {} Loss of Epoch {}: {:.6f} | Acc: {:.2f}%".format(batch_idx, epoch + 1, loss,
@@ -59,7 +63,7 @@ def val_epoch(model, criterion, dataloader, device, epoch, logger, writer, weigh
                 logger.info("Validation iteration {} Loss of Epoch {}: {:.6f} | Acc: {:.2f}%".format(batch_idx, epoch + 1, loss,
                                                                                             score * 100))
         # Compute the average loss & accuracy
-        validation_loss = sum(losses)/len(losses)
+        validation_loss = sum(losses) / len(losses)
         all_label = torch.stack(all_label, dim=0)
         all_pred = torch.stack(all_pred, dim=0)
         validation_acc = accuracy_score(all_label.squeeze().cpu().data.squeeze().numpy(), all_pred.cpu().data.squeeze().numpy())
@@ -73,9 +77,9 @@ def val_epoch(model, criterion, dataloader, device, epoch, logger, writer, weigh
         writer.add_scalars('Loss', {'Test': validation_loss}, epoch + 1)
         writer.add_scalars('Accuracy', {'Test': validation_acc}, epoch + 1)
         logger.info("Average Test Loss of Epoch {}: {:.6f} | Acc: {:.2f}% | Top5_Acc: {:.2f}".format(epoch + 1, validation_loss,
-                                                                                        validation_acc * 100, val_5/len(all_label)))
+                                                                                        validation_acc * 100, (val_5/len(all_label))* 100))
     else:
         writer.add_scalars('Loss', {'validation': validation_loss}, epoch+1)
         writer.add_scalars('Accuracy', {'validation': validation_acc}, epoch+1)
-        logger.info("Average Validation Loss of Epoch {}: {:.6f} | Acc: {:.2f}% | Top5_Acc: {:.2f}".format(epoch+1, validation_loss, validation_acc*100, val_5/len(all_label)))
-    return validation_loss
+        logger.info("Average Validation Loss of Epoch {}: {:.6f} | Acc: {:.2f}% | Top5_Acc: {:.2f}".format(epoch+1, validation_loss, validation_acc*100, (val_5/len(all_label))* 100))
+    return validation_loss , validation_acc, val_5/len(all_label)
