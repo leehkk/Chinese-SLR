@@ -19,9 +19,10 @@ Then, install the following packages:
 - Numpy: `pip install numpy`
 
 Lastly, build the codebase by running:
-
+```
 git clone https://github.com/leehkk/Chinese-SLR
 cd Chinese-SLR
+```
 # Usage
 
 ## Training the RGB Model
