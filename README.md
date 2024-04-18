@@ -9,14 +9,15 @@ source activate Swin
 ```
 Next, you need to make sure that you have a CUDA version of PyTorch installed
 Then, install the following packages:
-```
-torchvision: pip install torchvision or conda install torchvision -c pytorch
-fvcore: pip install 'git+https://github.com/facebookresearch/fvcore'
-scikit-learn: pip install scikit-learn
-OpenCV: pip install opencv-python
-tensorboard: pip install tensorboard
-Numpy: pip install numpy
-```
+
+- tensorboard: `pip install tensorboard`
+- torchvision: pip install torchvision or conda install torchvision -c pytorch
+- fvcore: pip install 'git+https://github.com/facebookresearch/fvcore'
+- scikit-learn: pip install scikit-learn
+- OpenCV: pip install opencv-python
+- tensorboard: pip install tensorboard
+- Numpy: pip install numpy
+
 Lastly, build the codebase by running:
 
 git clone https://github.com/leehkk/Chinese-SLR
