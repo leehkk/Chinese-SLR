@@ -2,30 +2,44 @@
 The datasets will be released soon
 
 # Installation
-
-First, build the codebase by running:
+First, create a conda virtual environment and activate it:
 ```
-git clone https://github.com/leehkk/Chinese-SLR
-cd Chinese-SLR
-```
-Then, create a conda virtual environment and activate it:
-```
-conda env create -f environment.yaml
+conda create --name Swin python=3.8
 source activate Swin
 ```
+Next, you need to make sure that you have a CUDA version of PyTorch installed
+Then, install the following packages:
+```
+torchvision: pip install torchvision or conda install torchvision -c pytorch
+fvcore: pip install 'git+https://github.com/facebookresearch/fvcore'
+scikit-learn: pip install scikit-learn
+OpenCV: pip install opencv-python
+tensorboard: pip install tensorboard
+Numpy: pip install numpy
+```
+Lastly, build the codebase by running:
+
+git clone https://github.com/leehkk/Chinese-SLR
+cd Chinese-SLR
 # Usage
 
 ## Training the RGB Model
 
-Training the default Swin can be done using the following command:
+Training the SPL Swin can be done using the following command:
 
 ```
-python run.py
+python Swin/run_spl.py
 ```
 You may need to change location of your dataset in the run.py
 
 ## Inference
 
+We have provided some demo videos for use, and the full dataset will be released soon
+
+Inference can be done using the following command:
+```
+python Swin/inference.py
+```
 
 # Acknowledgements
 
