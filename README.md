@@ -5,7 +5,7 @@ The datasets will be released soon
 First, create a conda virtual environment and activate it:
 ```
 conda create --name Swin python=3.8
-source activate Swin
+conda activate Swin
 ```
 Next, you need to make sure that you have a CUDA version of PyTorch installed
 Then, install the following packages:
