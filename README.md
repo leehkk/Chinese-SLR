@@ -1,5 +1,6 @@
 # Chinese-SLR
-The datasets will be released soon
+The datasets now is available on http://ai.lsnu.edu.cn/info/1009/1880.htm.
+The latest version of the code will be updated soon. Stay tuned!
 
 # Installation
 First, create a conda virtual environment and activate it:
@@ -62,5 +63,15 @@ Our work is built on top of [Swin Transformer](https://github.com/microsoft/Swin
   author={Liu, Ze and Lin, Yutong and Cao, Yue and Hu, Han and Wei, Yixuan and Zhang, Zheng and Lin, Stephen and Guo, Baining},
   booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
   year={2021}
+}
+```
+```BibTeX
+@article{ren2025multi,
+  title={Multi-modal Isolated Sign Language Recognition Based on Self-paced Learning},
+  author={Ren, Yazhou and Li, Hongkai and Li, Yuhao and Pu, Jingyu and Pu, Xiaorong and Jing, Siyuan and Peng, Jin and He, Lifang},
+  journal={Expert Systems with Applications},
+  pages={128340},
+  year={2025},
+  publisher={Elsevier}
 }
 ```
