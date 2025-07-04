@@ -1,5 +1,6 @@
 # Chinese-SLR
 The datasets now is available on http://ai.lsnu.edu.cn/info/1009/1880.htm.
+Our paper now is available on https://authors.elsevier.com/a/1lFNZ3PiGTXIB7.
 The latest version of the code will be updated soon. Stay tuned!
 
 # Installation
@@ -70,6 +71,7 @@ Our work is built on top of [Swin Transformer](https://github.com/microsoft/Swin
   title={Multi-modal Isolated Sign Language Recognition Based on Self-paced Learning},
   author={Ren, Yazhou and Li, Hongkai and Li, Yuhao and Pu, Jingyu and Pu, Xiaorong and Jing, Siyuan and Peng, Jin and He, Lifang},
   journal={Expert Systems with Applications},
+ volume = {291},
   pages={128340},
   year={2025},
   publisher={Elsevier}
